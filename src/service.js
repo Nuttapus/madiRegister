@@ -14,7 +14,7 @@ app.use(cors())
 app.post('/register', (req, res) => {
     mongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
         const db = client.db(dbName)
-        db.collection('users').findOne({ email: req.body.email }, (err, result) => {
+        db.collection('users').findOne({ username: req.body.username }, (err, result) => {
             if (err) throw err
             if (result === null) {
                 const newUser = {
