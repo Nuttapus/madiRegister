@@ -61,54 +61,58 @@ class App extends Component {
     })
   }
 
-  onSubmit = (e) => {
-    if (this.state.flag) {
-      document.getElementById('statusEmail').classList.remove('is-danger')
-      this.setState({
-        pEmailhide: true
-      })
-      if (this.state.password === this.state.cfpassword) {
-        var data = {
-          username: this.state.username,
-          email: this.state.email,
-          password: this.state.password,
-          firstname: this.state.firstname,
-          lastname: this.state.lastname
-        }
-        axios.post("http://localhost:4001/register", data).then((res) => {
-          if (res.data.status) {
-            document.getElementById('statusUser').classList.remove('is-danger')
-            this.setState({ pUserhide: true})
-            console.log(res.data.status)
-          }else{
-            document.getElementById('statusUser').classList.add('is-danger')
-            this.setState({ pUserhide: false})
+  onSubmit = () => {
+    if (this.state.lastname !== "" && this.state.username !== "" && this.state.password !== "") {
+      if (this.state.flag) {
+        document.getElementById('statusEmail').classList.remove('is-danger')
+        this.setState({
+          pEmailhide: true
+        })
+        if (this.state.password === this.state.cfpassword) {
+          var data = {
+            username: this.state.username,
+            email: this.state.email,
+            password: this.state.password,
+            firstname: this.state.firstname,
+            lastname: this.state.lastname
           }
-        })
-        alert("success")
-        document.getElementById('statusPass').classList.remove('is-danger')
-        document.getElementById('statusCFPass').classList.remove('is-danger')
-        this.setState({
-          pCfPasshide: true,
-          pPasshide: true,
-          pShowJson: false
-        })
+          axios.post("http://localhost:4001/register", data).then((res) => {
+            if (res.data.status) {
+              document.getElementById('statusUser').classList.remove('is-danger')
+              this.setState({ pUserhide: true })
+              console.log(res.data.status)
+            } else {
+              document.getElementById('statusUser').classList.add('is-danger')
+              this.setState({ pUserhide: false })
+            }
+          })
+          alert("success")
+          document.getElementById('statusPass').classList.remove('is-danger')
+          document.getElementById('statusCFPass').classList.remove('is-danger')
+          this.setState({
+            pCfPasshide: true,
+            pPasshide: true,
+            pShowJson: false
+          })
+        } else {
+          document.getElementById('statusPass').classList.add('is-danger')
+          document.getElementById('statusCFPass').classList.add('is-danger')
+          this.setState({
+            pCfPasshide: false,
+            pPasshide: false,
+            pShowJson: true
+          })
+        }
       } else {
-        document.getElementById('statusPass').classList.add('is-danger')
-        document.getElementById('statusCFPass').classList.add('is-danger')
+        document.getElementById('statusEmail').classList.add('is-danger')
         this.setState({
-          pCfPasshide: false,
-          pPasshide: false,
-          pShowJson: true
+          pEmailhide: false
         })
       }
-    } else {
-      document.getElementById('statusEmail').classList.add('is-danger')
-      this.setState({
-        pEmailhide: false
-      })
+    }else{
+      alert("Please insert information all field")
     }
-  }
+}
 
   render() {
     return (
