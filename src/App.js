@@ -3,6 +3,8 @@ import './App.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.css'
 import '../node_modules/bulma/css/bulma.min.css'
 import axios from 'axios';
+import countryList from 'react-select-country-list'
+import Select from 'react-select'
 
 class App extends Component {
 
@@ -13,6 +15,11 @@ class App extends Component {
     cfpassword: '',
     firstname: '',
     lastname: '',
+    options: countryList().getData(),
+    value: null,
+    country: '',
+    sex: '',
+    education: [],
     flag: true,
     pEmailhide: true,
     pPasshide: true,
@@ -20,8 +27,6 @@ class App extends Component {
     pShowJson: true,
     pUserhide: true
   }
-
-
   handleChangeUsername = (e) => {
     this.setState({
       username: e.target.value
@@ -60,8 +65,56 @@ class App extends Component {
       lastname: e.target.value
     })
   }
+  handleChangeSex = (e) => {
+    this.setState({
+      sex: e.target.value
+    })
+  }
+  handleChangeCountry = value => {
+    this.setState({ value })
+    this.setState({
+      country: value.label
+    })
+  }
+  toggleChangeEducation1 = (e) => {
+    if (this.refs.checkbox1.checked == true) {
+      this.setState({ education: this.state.education.concat(e.target.value) })
+    } else {
+      var array = this.state.education; // make a separate copy of the array
+      var index = array.indexOf(e.target.value)
+      if (index !== -1) {
+        array.splice(index, 1)
+        this.setState({ education: array })
+      }
+    }
+  }
+  toggleChangeEducation2 = (e) => {
+    if (this.refs.checkbox2.checked == true) {
+      this.setState({ education: this.state.education.concat(e.target.value) })
+    } else {
+      var array = this.state.education; // make a separate copy of the array
+      var index = array.indexOf(e.target.value)
+      if (index !== -1) {
+        array.splice(index, 1);
+        this.setState({ education: array });
+      }
+    }
+  }
+  toggleChangeEducation3 = (e) => {
+    if (this.refs.checkbox3.checked == true) {
+      this.setState({ education: this.state.education.concat(e.target.value) })
+    } else {
+      var array = this.state.education; // make a separate copy of the array
+      var index = array.indexOf(e.target.value)
+      if (index !== -1) {
+        array.splice(index, 1);
+        this.setState({ education: array });
+      }
+    }
+  }
 
   onSubmit = () => {
+    console.log(this.state.sex)
     if (this.state.lastname !== "" && this.state.username !== "" && this.state.password !== "") {
       if (this.state.flag) {
         document.getElementById('statusEmail').classList.remove('is-danger')
@@ -74,7 +127,10 @@ class App extends Component {
             email: this.state.email,
             password: this.state.password,
             firstname: this.state.firstname,
-            lastname: this.state.lastname
+            lastname: this.state.lastname,
+            sex: this.state.sex,
+            country: this.state.country,
+            education: this.state.education,
           }
           axios.post("http://localhost:4001/register", data).then((res) => {
             if (res.data.status) {
@@ -109,10 +165,11 @@ class App extends Component {
           pEmailhide: false
         })
       }
-    }else{
+    } else {
       alert("Please insert information all field")
     }
-}
+  }
+
 
   render() {
     return (
@@ -178,6 +235,67 @@ class App extends Component {
               <input className="input" type="text" placeholder="Last Name" onChange={this.handleChangeLastName} pattern="[^@]+@[^@]+\.[a-zA-Z]{2,6}" />
             </div>
           </div>
+          {/* sex */}
+          <div className="field">
+            <label className="label">Sex</label>
+            <div className="control">
+              <div className="row">
+                <div className="col">
+                  <label className="radio">
+                    <input type="radio" name="answer" value="Man" onChange={this.handleChangeSex} />
+                    &nbsp;Man
+              </label>
+                </div>
+                <div className="col">
+                  <label className="radio">
+                    <input type="radio" name="answer" value="Female" onChange={this.handleChangeSex} />
+                    &nbsp;Female
+              </label>
+                </div>
+                <div className="col">
+                  <label className="radio">
+                    <input type="radio" name="answer" value="Alternative Sex" onChange={this.handleChangeSex} />
+                    &nbsp;Alternative Sex
+              </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* country */}
+          <div className="field">
+            <label className="label">Country</label>
+            <div className="is-fullwidth">
+              <Select
+                options={this.state.options}
+                value={this.state.value}
+                onChange={this.handleChangeCountry}
+              />
+            </div>
+          </div>
+          {/* education */}
+          <div className="field">
+            <label className="label">Education</label>
+            <div className="row">
+              <div className="col">
+                <label className="checkbox">
+                  <input type="checkbox" className="is-fullwidth" value="Primary education" ref="checkbox1" onChange={this.toggleChangeEducation1} />
+                  &nbsp; Primary education
+            </label>&nbsp;
+            </div>
+              <div className="col">
+                <label className="checkbox ">
+                  <input type="checkbox" className="is-fullwidth" value="Secondary education" ref="checkbox2" onChange={this.toggleChangeEducation2} />
+                  &nbsp; Secondary education
+            </label>&nbsp;
+            </div>
+              <div className="col">
+                <label className="checkbox ">
+                  <input type="checkbox" className="is-fullwidth" value="University education" ref="checkbox3" onChange={this.toggleChangeEducation3} />
+                  &nbsp; University education
+            </label>&nbsp;
+            </div>
+            </div>
+          </div>
           {/* button */}
           <div className="field"><br />
             <a className="button has-text-white is-dark is-fullwidth " onClick={this.onSubmit}>Sign Up</a>
@@ -191,6 +309,9 @@ class App extends Component {
             'password': '{this.state.password}', <br />
             'firstname': '{this.state.firstname}', <br />
             'lastname': '{this.state.lastname}'<br />
+            'sex': '{this.state.sex}', <br />
+            'country': '{this.state.country}', <br />
+            'education': '{this.state.education}'<br />
             {'}'}
           </p>
         </div>

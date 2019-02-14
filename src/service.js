@@ -2,7 +2,6 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const mongoClient = require('mongodb').MongoClient
-const ObjectId = require('mongodb').ObjectID
 const url = 'mongodb://admin:a123456@ds127655.mlab.com:27655/testregister'
 const dbName = 'testregister';
 const app = express()
@@ -22,7 +21,10 @@ app.post('/register', (req, res) => {
                     email: req.body.email,
                     password: req.body.password,
                     firstname: req.body.firstname,
-                    lastname: req.body.lastname
+                    lastname: req.body.lastname,
+                    sex: req.body.sex,
+                    country: req.body.country,
+                    education: req.body.education,
                 };
                 db.collection('users').insertOne(newUser, (err, result) => {
                     if (err) throw err
