@@ -39,6 +39,20 @@ app.post('/register', (req, res) => {
     })
 })
 
+app.get('/education', (req, res) => {
+    var arr 
+    mongoClient.connect(url, (err, client) => {
+        console.log('Connected successfully to server');
+        const db = client.db(dbName)
+        db.collection('education').find({}, { projection: { _id: 0, educationLevel: 1 }}).toArray(function (err, result) {
+            if (err) throw err;
+            res.send(result)
+            console.log(result);
+            client.close();
+        });
+    })
+})
+
 app.listen(port, () => {
     console.log(`App listening on ${port}`)
 })
