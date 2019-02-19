@@ -7,6 +7,7 @@ import countryList from 'react-select-country-list'
 import Select from 'react-select'
 import Checkbox from './checkbox'
 
+
 class register extends Component {
     state = {
         username: '',
@@ -78,42 +79,7 @@ class register extends Component {
             country: value.label
         })
     }
-    // toggleChangeEducation1 = (e) => {
-    //     if (this.refs.checkbox1.checked === true) {
-    //         this.setState({ education: this.state.education.concat(e.target.value) })
-    //     } else {
-    //         var array = this.state.education; // make a separate copy of the array
-    //         var index = array.indexOf(e.target.value)
-    //         if (index !== -1) {
-    //             array.splice(index, 1)
-    //             this.setState({ education: array })
-    //         }
-    //     }
-    // }
-    // toggleChangeEducation2 = (e) => {
-    //     if (this.refs.checkbox2.checked === true) {
-    //         this.setState({ education: this.state.education.concat(e.target.value) })
-    //     } else {
-    //         var array = this.state.education; // make a separate copy of the array
-    //         var index = array.indexOf(e.target.value)
-    //         if (index !== -1) {
-    //             array.splice(index, 1);
-    //             this.setState({ education: array });
-    //         }
-    //     }
-    // }
-    // toggleChangeEducation3 = (e) => {
-    //     if (this.refs.checkbox3.checked === true) {
-    //         this.setState({ education: this.state.education.concat(e.target.value) })
-    //     } else {
-    //         var array = this.state.education; // make a separate copy of the array
-    //         var index = array.indexOf(e.target.value)
-    //         if (index !== -1) {
-    //             array.splice(index, 1);
-    //             this.setState({ education: array });
-    //         }
-    //     }
-    // }
+
     handelSet = (data) => {
         this.setState({
             dataCheckbox: data
@@ -144,7 +110,6 @@ class register extends Component {
                     pEmailhide: true
                 })
                 if (this.state.password === this.state.cfpassword) {
-                    
                     var data = {
                         username: this.state.username,
                         email: this.state.email,
@@ -161,6 +126,7 @@ class register extends Component {
                                 this.setState({ pUserhide: true })
                                 console.log(res.data.status)
                                 alert("success")
+                                this.props.history.push(`/listdata`)
                             } else {
                                 document.getElementById('statusUser').classList.add('is-danger')
                                 this.setState({ pUserhide: false })

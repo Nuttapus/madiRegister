@@ -40,14 +40,63 @@ app.post('/register', (req, res) => {
 })
 
 app.get('/education', (req, res) => {
-    var arr 
     mongoClient.connect(url, (err, client) => {
         console.log('Connected successfully to server');
         const db = client.db(dbName)
-        db.collection('education').find({}, { projection: { _id: 0, educationLevel: 1 }}).toArray(function (err, result) {
+        db.collection('education').find({}, { projection: { _id: 0, educationLevel: 1 } }).toArray(function (err, result) {
             if (err) throw err;
             res.send(result)
-            console.log(result);
+            client.close();
+        });
+    })
+})
+
+app.get('/listdata', (req, res) => {
+    mongoClient.connect(url, (err, client) => {
+        console.log('Connected successfully to server');
+        const db = client.db(dbName)
+        db.collection('users').find({}, { projection: { _id: 0 } }).toArray(function (err, result) {
+            console.log("Ok/listdata")
+            if (err) throw err;
+            res.send(result)
+            client.close();
+        });
+    })
+})
+
+app.delete('/listdata/listdelete', (req, res) => {
+    mongoClient.connect(url, (err, client) => {
+        console.log('Connected successfully to server');
+        const db = client.db(dbName)
+        var myquery = { username: req.body.data };
+        db.collection("users").deleteOne(myquery, function (err, obj) {
+            if (err) throw err;
+            console.log("1 document deleted")
+            res.json({ status: true })
+            client.close();
+        });
+    })
+})
+
+app.patch('/listdata/listupdate', (req, res) => {
+    mongoClient.connect(url, (err, client) => {
+        console.log('Connected successfully to server');
+        const db = client.db(dbName)
+        const dataUpdate = {
+            username: req.body.username,
+            email: req.body.email,
+            password: req.body.password,
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
+            sex: req.body.sex,
+            country: req.body.country,
+            education: req.body.education,
+        };
+        db.collection("users").update({ username: req.body.username },  dataUpdate , function(err, result) {
+            if (err) throw err;
+            //console.log(result)
+            console.log(req.body.username)
+            res.json({ status: true })
             client.close();
         });
     })

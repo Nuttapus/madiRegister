@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios';
 import '../../node_modules/bootstrap/dist/css/bootstrap.css'
 import '../../node_modules/bulma/css/bulma.min.css'
+
 var showEducation = []
 
 class checkbox extends Component {
@@ -41,7 +42,6 @@ class checkbox extends Component {
         }
     }
 
-
     render() {
         for (var i = 0; i < this.state.dataEducation.length; i++) {
             showEducation.push(this.state.dataEducation[i].educationLevel)
@@ -59,7 +59,7 @@ class checkbox extends Component {
                     <tbody>
                         {productsList.map((product, i) => {
                             return (
-                                <tr key={i + 1}>
+                                <tr key={i + 1}>    
                                     <div className="checkbox checkbox-circle checkbox-color-scheme">
                                         <label className="checkbox-checked">
                                             <input type="checkbox" value={product} onChange={this.onAddingItem(i)} />
